@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+	xmlns:android="http://schemas.android.com/apk/res/android" id="cordova-plugin-admob-jd" version="1.0.0">
+	<description>Google AdMob Ads plugin for Cordova</description>
+	<name>cordova-plugin-admob-jd</name>
+	<author href="https://github.com/jamesfdickinson/cordova-plugin-admob-jd">jamesfdickinson</author>
+	<license>MIT</license>
+	<keywords>ad,ads,admob,google,advertising,advertisment,publicity,earn,win,play,services,iad,flurry,monetization,money</keywords>
+	<repo>https://github.com/jamesfdickinson/cordova-plugin-admob-jd.git</repo>
+	<issue>https://github.com/jamesfdickinson/cordova-plugin-admob-jd/issues</issue>
+
+	<engines>
+		<engine name="cordova" version=">=9.0.0" />
+	</engines>
+
+
+	<js-module src="www/admob.js" name="AdMobAds">
+		<clobbers target="window.admob" />
+	</js-module>
+
+	<!-- android -->
+	<platform name="android">
+		<preference name="ADMOB_APP_ID" />
+
+		<framework src="com.google.android.gms:play-services-ads:20.0.0" />
+
+		<config-file target="AndroidManifest.xml" parent="/manifest/application">
+			<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="$ADMOB_APP_ID"/>
+		</config-file>
+
+		<config-file target="AndroidManifest.xml" parent="/*">
+			<uses-permission android:name="android.permission.INTERNET" />
+			<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+		</config-file>
+
+		<source-file src="src/android/AdMobAds.java" target-dir="src/com/jdsoftwarellc/cordova/admob" />
+		<source-file src="src/android/AdMobAppOpenAd.java" target-dir="src/com/jdsoftwarellc/cordova/admob" />
+		<source-file src="src/android/AdMobInterstitialAd.java" target-dir="src/com/jdsoftwarellc/cordova/admob" />
+		<source-file src="src/android/AdMobRewardedAd.java" target-dir="src/com/jdsoftwarellc/cordova/admob" />
+	</platform>
+
+	<!-- ios -->
+	<platform name="ios">
+		<preference name="IOS_APP_ID" />
+
+		<config-file target="*-Info.plist" parent="GADApplicationIdentifier">
+			<string>$IOS_APP_ID</string>
+		</config-file>
+		<config-file target="config.xml" parent="/*">
+			<feature name="AdMobAds">
+				<param name="ios-package" value="CDVAdMobAds" />
+			</feature>
+		</config-file>
+
+		<header-file src="src/ios/CDVAdMobAds.h" />
+		<source-file src="src/ios/CDVAdMobAds.m" />
+		<header-file src="src/ios/CDVAdMobAdsAdListener.h" />
+		<source-file src="src/ios/CDVAdMobAdsAdListener.m" />
+
+		<!-- Google AdMob framework -->
+		<!-- <framework src="Google-Mobile-Ads-SDK" type="podspec" /> -->
+		<!-- <framework src="Firebase/Analytics" type="podspec" />
+    <framework src="Firebase/AdMob" type="podspec" /> -->
+		<podspec>
+			<config>
+				<source url="https://cdn.cocoapods.org/"/>
+			</config>
+			<pods>
+				<pod name="Google-Mobile-Ads-SDK" />
+				<!-- <pod name="Firebase/Analytics" />
+                <pod name="Firebase/AdMob" /> -->
+			</pods>
+		</podspec>
+	</platform>
+</plugin>

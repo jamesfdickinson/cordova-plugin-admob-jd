@@ -1,0 +1,48 @@
+{
+    "author": "jamesfdickinson",
+    "bugs": {
+        "url": "https://github.com/jamesfdickinson/cordova-plugin-admob-jd/issues"
+    },
+    "cordova": {
+        "id": "cordova-plugin-admob-jd",
+        "platforms": [
+            "android",
+            "ios"
+        ]
+    },
+    "description": "Google AdMob Ads plugin for Cordova",
+    "engines": [
+        {
+            "name": "cordova",
+            "version": ">=8.0.0"
+        }
+    ],
+    "homepage": "https://github.com/jamesfdickinson/cordova-plugin-admob-jd#readme",
+    "keywords": [
+        "ad",
+        "ads",
+        "admob",
+        "google",
+        "advertising",
+        "advertisment",
+        "publicity",
+        "earn",
+        "win",
+        "play",
+        "services",
+        "iad",
+        "flurry",
+        "monetization",
+        "money",
+        "ecosystem:cordova",
+        "cordova-android",
+        "cordova-ios"
+    ],
+    "license": "MIT",
+    "name": "cordova-plugin-admob-jd",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jamesfdickinson/cordova-plugin-admob-jd"
+    },
+    "version": "1.0.0"
+}
