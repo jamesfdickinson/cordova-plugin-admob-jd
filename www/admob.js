@@ -47,7 +47,7 @@ admob.setOptions = function (options, successCallback, failureCallback) {
 	options = options || admob.DEFAULT_OPTIONS;
 
 	if (typeof options === 'object') {
-		cordova.exec(successCallback, failureCallback, 'AdMobAds', 'setOptions', [options]);
+		cordova.exec(successCallback, failureCallback, 'AdManager', 'setOptions', [options]);
 
 	} else {
 		if (typeof failureCallback === 'function') {
@@ -65,7 +65,7 @@ admob.requestInterstitialAd = function (options, successCallback, failureCallbac
 		options = undefined;
 	}
 	options = options || {};
-	cordova.exec(successCallback, failureCallback, 'AdMobAds', 'requestInterstitialAd', [options]);
+	cordova.exec(successCallback, failureCallback, 'AdManager', 'requestInterstitialAd', [options]);
 };
 
 /**
@@ -75,7 +75,7 @@ admob.requestInterstitialAd = function (options, successCallback, failureCallbac
  * @param {function()} failureCallback The function to call if the ad failed to be shown.
  */
 admob.showInterstitialAd = function (successCallback, failureCallback) {
-	cordova.exec(successCallback, failureCallback, 'AdMobAds', 'showInterstitialAd', []);
+	cordova.exec(successCallback, failureCallback, 'AdManager', 'showInterstitialAd', []);
 };
 
 /**
@@ -92,7 +92,7 @@ admob.requestRewardedAd = function (options, successCallback, failureCallback) {
 		options = undefined;
 	}
 	options = options || {};
-	cordova.exec(successCallback, failureCallback, 'AdMobAds', 'requestRewardedAd', [options]);
+	cordova.exec(successCallback, failureCallback, 'AdManager', 'requestRewardedAd', [options]);
 };
 
 /**
@@ -102,7 +102,7 @@ admob.requestRewardedAd = function (options, successCallback, failureCallback) {
  * @param {function()} failureCallback The function to call if the ad failed to be shown.
  */
 admob.showRewardedAd = function (successCallback, failureCallback) {
-	cordova.exec(successCallback, failureCallback, 'AdMobAds', 'showRewardedAd', []);
+	cordova.exec(successCallback, failureCallback, 'AdManager', 'showRewardedAd', []);
 };
 
 
@@ -114,11 +114,11 @@ admob.requestAppOpenAd = function (options, successCallback, failureCallback) {
 	}
 
 	options = options || {};
-	cordova.exec(successCallback, failureCallback, 'AdMobAds', 'requestAppOpenAd', [options]);
+	cordova.exec(successCallback, failureCallback, 'AdManager', 'requestAppOpenAd', [options]);
 };
 
 admob.showAppOpenAd = function (successCallback, failureCallback) {
-	cordova.exec(successCallback, failureCallback, 'AdMobAds', 'showAppOpenAd', [])
+	cordova.exec(successCallback, failureCallback, 'AdManager', 'showAppOpenAd', [])
 };
 
 
