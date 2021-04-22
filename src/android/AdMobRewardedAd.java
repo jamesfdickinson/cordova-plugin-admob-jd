@@ -20,12 +20,12 @@ public class AdMobRewardedAd {
     public static final String ADMOBADS_LOGTAG = "AdmMobAds";
 
     private String adType = "app_open";
-    private AdMobAds adManager;
+    private AdManager adManager;
     private RewardedAd rewardedAd = null;
     private boolean isShowingAd = false;
     private RewardedAdLoadCallback loadCallback;
     RewardItem rewardItemSave = null;
-    public AdMobRewardedAd(AdMobAds admobAds, Activity activity) {
+    public AdMobRewardedAd(AdManager admobAds, Activity activity) {
         this.adManager = admobAds;
     }
 

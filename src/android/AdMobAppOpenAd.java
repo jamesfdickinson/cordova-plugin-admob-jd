@@ -16,13 +16,13 @@ public class AdMobAppOpenAd {
     public static final String ADMOBADS_LOGTAG = "AdmMobAds";
 
     private String adType = "app_open";
-    private AdMobAds adManager;
+    private AdManager adManager;
     private AppOpenAd appOpenAd = null;
     private boolean isShowingAd = false;
     //private String appOpenId = "";
     private AppOpenAd.AppOpenAdLoadCallback loadCallback;
 
-    public AdMobAppOpenAd(AdMobAds admobAds, Activity activity) {
+    public AdMobAppOpenAd(AdManager admobAds, Activity activity) {
         this.adManager = admobAds;
     }
 

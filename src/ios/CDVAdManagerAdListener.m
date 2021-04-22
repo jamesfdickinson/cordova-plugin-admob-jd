@@ -1,23 +1,23 @@
 
 #import <Foundation/Foundation.h>
-#include "CDVAdMobAds.h"
-#include "CDVAdMobAdsAdListener.h"
+#include "CDVAdManager.h"
+#include "CDVAdManagerAdListener.h"
 
-@interface CDVAdMobAdsAdListener() 
+@interface CDVAdManagerAdListener() 
 - (NSString *) __getErrorReason:(NSInteger) errorCode;
 @property( assign) NSInteger rewardAmount;
 @property( assign) NSString* rewardType;
 @end
 
 
-@implementation CDVAdMobAdsAdListener
+@implementation CDVAdManagerAdListener
 
 @synthesize adMobAds;
 
-- (instancetype)initWithAdMobAds: (CDVAdMobAds *)originalAdMobAds {
+- (instancetype)initWithAdManager: (CDVAdManager *)originalAdManager {
     self = [super init];
     if (self) {
-        adMobAds = originalAdMobAds;
+        adMobAds = originalAdManager;
     }
     return self;
 }

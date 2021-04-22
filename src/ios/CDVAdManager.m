@@ -1,10 +1,10 @@
 
 #import <AdSupport/ASIdentifierManager.h>
 #import <CommonCrypto/CommonDigest.h>
-#import "CDVAdMobAds.h"
+#import "CDVAdManager.h"
 #import "MainViewController.h"
 
-@interface CDVAdMobAds() <GADRewardedAdDelegate>
+@interface CDVAdManager() <GADRewardedAdDelegate>
 
 @property (assign) BOOL isBannerRequested;
 @property (assign) BOOL isInterstitialRequested;
@@ -15,11 +15,11 @@
 @property( assign) NSString* rewardType;
 
 - (void) __setOptions:(NSDictionary*) options;
-- (BOOL) __createBanner:(NSString *)_pid withAdListener:(CDVAdMobAdsAdListener *)adListener isTappx:(BOOL)isTappx;
+- (BOOL) __createBanner:(NSString *)_pid withAdListener:(CDVAdManagerAdListener *)adListener isTappx:(BOOL)isTappx;
 - (BOOL) __showBannerAd:(BOOL)show;
-- (BOOL) __createInterstitial:(NSString *)_iid withAdListener:(CDVAdMobAdsAdListener *)adListener;
+- (BOOL) __createInterstitial:(NSString *)_iid withAdListener:(CDVAdManagerAdListener *)adListener;
 - (BOOL) __showInterstitial:(BOOL)show;
-- (BOOL) __createRewarded:(NSString *)_iid withAdListener:(CDVAdMobAdsAdListener *)adListener;
+- (BOOL) __createRewarded:(NSString *)_iid withAdListener:(CDVAdManagerAdListener *)adListener;
 - (BOOL) __showRewarded:(BOOL)show;
 - (GADRequest*) __buildAdRequest;
 - (NSString*) __md5: (NSString*) s;
@@ -38,7 +38,7 @@
 
 @end
 
-@implementation CDVAdMobAds
+@implementation CDVAdManager
 
 #define INTERSTITIAL                @"interstitial";
 #define REWARDED                    @"rewarded";
@@ -117,7 +117,7 @@
     hasTappx = false;
     tappxShare = 0.5;
     
-    adsListener = [[CDVAdMobAdsAdListener alloc] initWithAdMobAds:self];
+    adsListener = [[CDVAdManagerAdListener alloc] initWithAdManager:self];
     
     rewardAmount = 0;
     rewardType = @"";
@@ -290,7 +290,7 @@
     }];
 }
 
-- (void)onBannerAd:(GADBannerView *)adView adListener:(CDVAdMobAdsAdListener *)adListener {
+- (void)onBannerAd:(GADBannerView *)adView adListener:(CDVAdManagerAdListener *)adListener {
     if (self.isBannerShow) {
         [self.commandDelegate runInBackground:^{
             if (![self __showBannerAd:YES]) {
@@ -302,7 +302,7 @@
     }
 }
 
-- (void)onInterstitialAd:(GADInterstitial *)interstitial adListener:(CDVAdMobAdsAdListener *)adListener {
+- (void)onInterstitialAd:(GADInterstitial *)interstitial adListener:(CDVAdManagerAdListener *)adListener {
     self.isInterstitialAvailable = true;
     if (self.isInterstitialAutoShow) {
         [self.commandDelegate runInBackground:^{
@@ -313,7 +313,7 @@
     }
 }
 
-- (void)onRewardedAd:(GADRewardedAd *)rewarded adListener:(CDVAdMobAdsAdListener *)adListener {
+- (void)onRewardedAd:(GADRewardedAd *)rewarded adListener:(CDVAdManagerAdListener *)adListener {
     self.isRewardedAvailable = true;
     if (self.isRewardedAutoShow) {
         [self.commandDelegate runInBackground:^{
@@ -324,7 +324,7 @@
     }
 }
 
-- (void)onAppOpenAd:(GADAppOpenAd *)appOpenAd adListener:(CDVAdMobAdsAdListener *)adListener {
+- (void)onAppOpenAd:(GADAppOpenAd *)appOpenAd adListener:(CDVAdManagerAdListener *)adListener {
     self.isAppOpenAvailable = true;
     self.appOpenAd = appOpenAd;
 }
@@ -601,7 +601,7 @@
     }
 }
 
-- (BOOL) __createBanner:(NSString *)_pid withAdListener:(CDVAdMobAdsAdListener *)adListener isTappx:(BOOL)isTappx {
+- (BOOL) __createBanner:(NSString *)_pid withAdListener:(CDVAdManagerAdListener *)adListener isTappx:(BOOL)isTappx {
     BOOL succeeded = false;
     __block NSString *__pid = _pid;
     
@@ -759,7 +759,7 @@
     return succeeded;
 }
 
-- (BOOL) __createAppOpen:(NSString *)_appOpenId withAdListener:(CDVAdMobAdsAdListener *) adListener {
+- (BOOL) __createAppOpen:(NSString *)_appOpenId withAdListener:(CDVAdManagerAdListener *) adListener {
     BOOL succeeded = false;
     
     if (self.appOpenAd) {
@@ -810,7 +810,7 @@
     return succeeded;
 }
 
-- (BOOL) __createInterstitial:(NSString *)_iid withAdListener:(CDVAdMobAdsAdListener *) adListener {
+- (BOOL) __createInterstitial:(NSString *)_iid withAdListener:(CDVAdManagerAdListener *) adListener {
     BOOL succeeded = false;
     
     // Clean up the old interstitial...
@@ -867,7 +867,7 @@
 }
 
 
-- (BOOL) __createRewarded:(NSString *)_iid withAdListener:(CDVAdMobAdsAdListener *) adListener {
+- (BOOL) __createRewarded:(NSString *)_iid withAdListener:(CDVAdManagerAdListener *) adListener {
     BOOL succeeded = false;
     
     // Clean up the old rewardedAd...

@@ -18,13 +18,13 @@ public class AdMobInterstitialAd {
     public static final String ADMOBADS_LOGTAG = "AdmMobAds";
 
     private String adType = "interstitial";
-    private AdMobAds adManager;
+    private AdManager adManager;
     private InterstitialAd interstitialAd = null;
     private boolean isShowingAd = false;
     //private String appOpenId = "";
     private InterstitialAdLoadCallback loadCallback;
 
-    public AdMobInterstitialAd(AdMobAds admobAds, Activity activity) {
+    public AdMobInterstitialAd(AdManager admobAds, Activity activity) {
         this.adManager = admobAds;
     }
 

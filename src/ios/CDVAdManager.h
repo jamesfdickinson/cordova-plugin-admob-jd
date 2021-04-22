@@ -11,7 +11,7 @@
 #import <GoogleMobileAds/GADInterstitialDelegate.h>
 #import <GoogleMobileAds/GADRewardedAdDelegate.h>
 #import <GoogleMobileAds/GoogleMobileAds.h>
-#import "CDVAdMobAdsAdListener.h"
+#import "CDVAdManagerAdListener.h"
 
 
 #pragma mark - JS requestAd options
@@ -19,12 +19,12 @@
 @class GADBannerView;
 @class GADInterstitial;
 @class GADRewardAd;
-@class CDVAdMobAdsAdListener;
+@class CDVAdManagerAdListener;
 @class GADAppOpenAd;
 
-#pragma mark AdMobAds Plugin
+#pragma mark AdManager Plugin
 
-@interface CDVAdMobAds : CDVPlugin {
+@interface CDVAdManager : CDVPlugin {
 }
 
 @property (assign) BOOL isInterstitialAvailable;
@@ -35,7 +35,7 @@
 @property (nonatomic, retain) GADInterstitial *interstitialView;
 @property (nonatomic, retain) GADRewardedAd *rewardedView;
 @property (nonatomic, retain) GADAppOpenAd* appOpenAd;
-@property (nonatomic, retain) CDVAdMobAdsAdListener *adsListener;
+@property (nonatomic, retain) CDVAdManagerAdListener *adsListener;
 
 @property (nonatomic, retain) NSString* bannerAdId;
 @property (nonatomic, retain) NSString* interstitialAdId;
@@ -75,9 +75,9 @@
 - (void)requestAppOpenAd:(CDVInvokedUrlCommand *)command;
 - (void)showAppOpenAd:(CDVInvokedUrlCommand *)command;
 
-- (void)onBannerAd:(GADBannerView *)adView adListener:(CDVAdMobAdsAdListener *)adListener ;
-- (void)onInterstitialAd:(GADInterstitial *)interstitial adListener:(CDVAdMobAdsAdListener *)adListener;
-- (void)onRewardedAd:(GADRewardedAd *)rewarded adListener:(CDVAdMobAdsAdListener *)adListener;
-- (void)onAppOpenAd:(GADAppOpenAd *)appOpenAd adListener:(CDVAdMobAdsAdListener *)adListener;
+- (void)onBannerAd:(GADBannerView *)adView adListener:(CDVAdManagerAdListener *)adListener ;
+- (void)onInterstitialAd:(GADInterstitial *)interstitial adListener:(CDVAdManagerAdListener *)adListener;
+- (void)onRewardedAd:(GADRewardedAd *)rewarded adListener:(CDVAdManagerAdListener *)adListener;
+- (void)onAppOpenAd:(GADAppOpenAd *)appOpenAd adListener:(CDVAdManagerAdListener *)adListener;
 
 @end

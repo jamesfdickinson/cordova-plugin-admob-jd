@@ -1,22 +1,22 @@
 
 #import <Foundation/Foundation.h>
-#import "CDVAdMobAds.h"
+#import "CDVAdManager.h"
 #import <GoogleMobileAds/GADBannerViewDelegate.h>
 #import <GoogleMobileAds/GADInterstitialDelegate.h>
 #import <GoogleMobileAds/GoogleMobileAds.h>
 #import <GoogleMobileAds/GADRewardedAdDelegate.h>
 #import <GoogleMobileAds/GADExtras.h>
 
-@class CDVAdMobAds;
+@class CDVAdManager;
 
-@interface CDVAdMobAdsAdListener : NSObject <GADRewardedAdDelegate,GADBannerViewDelegate, GADInterstitialDelegate, GADFullScreenPresentingAd> {
+@interface CDVAdManagerAdListener : NSObject <GADRewardedAdDelegate,GADBannerViewDelegate, GADInterstitialDelegate, GADFullScreenPresentingAd> {
     
 }
 
-@property (nonatomic, retain) CDVAdMobAds *adMobAds;
+@property (nonatomic, retain) CDVAdManager *adMobAds;
 
 
-- (instancetype)initWithAdMobAds: (CDVAdMobAds *)originalAdMobAds ;
+- (instancetype)initWithAdManager: (CDVAdManager *)originalAdManager ;
 - (void)adViewDidFailedToShow:(GADBannerView *)view;
 - (void)interstitialDidFailedToShow:(GADInterstitial *) interstitial;
 - (void)rewardedDidFailedToShow:(GADRewardedAd *) rewarded;

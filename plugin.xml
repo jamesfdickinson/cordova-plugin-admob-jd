@@ -14,7 +14,7 @@
 	</engines>
 
 
-	<js-module src="www/admob.js" name="AdMobAds">
+	<js-module src="www/admob.js" name="AdManager">
 		<clobbers target="window.admob" />
 	</js-module>
 
@@ -33,7 +33,7 @@
 			<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 		</config-file>
 
-		<source-file src="src/android/AdMobAds.java" target-dir="src/com/jdsoftwarellc/cordova/admob" />
+		<source-file src="src/android/AdManager.java" target-dir="src/com/jdsoftwarellc/cordova/admob" />
 		<source-file src="src/android/AdMobAppOpenAd.java" target-dir="src/com/jdsoftwarellc/cordova/admob" />
 		<source-file src="src/android/AdMobInterstitialAd.java" target-dir="src/com/jdsoftwarellc/cordova/admob" />
 		<source-file src="src/android/AdMobRewardedAd.java" target-dir="src/com/jdsoftwarellc/cordova/admob" />
@@ -47,15 +47,15 @@
 			<string>$IOS_APP_ID</string>
 		</config-file>
 		<config-file target="config.xml" parent="/*">
-			<feature name="AdMobAds">
-				<param name="ios-package" value="CDVAdMobAds" />
+			<feature name="AdManager">
+				<param name="ios-package" value="CDVAdManager" />
 			</feature>
 		</config-file>
 
-		<header-file src="src/ios/CDVAdMobAds.h" />
-		<source-file src="src/ios/CDVAdMobAds.m" />
-		<header-file src="src/ios/CDVAdMobAdsAdListener.h" />
-		<source-file src="src/ios/CDVAdMobAdsAdListener.m" />
+		<header-file src="src/ios/CDVAdManager.h" />
+		<source-file src="src/ios/CDVAdManager.m" />
+		<header-file src="src/ios/CDVAdManagerAdListener.h" />
+		<source-file src="src/ios/CDVAdManagerAdListener.m" />
 
 		<!-- Google AdMob framework -->
 		<!-- <framework src="Google-Mobile-Ads-SDK" type="podspec" /> -->

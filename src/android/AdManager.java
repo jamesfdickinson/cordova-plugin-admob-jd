@@ -18,8 +18,8 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.rewarded.RewardItem;
 
 
-public class AdMobAds extends CordovaPlugin {
-    public static final String ADMOBADS_LOGTAG = "AdMobAds";
+public class AdManager extends CordovaPlugin {
+    public static final String ADMOBADS_LOGTAG = "AdManager";
 
     /* Cordova Actions. */
     private static final String ACTION_SET_OPTIONS = "setOptions";
@@ -76,7 +76,7 @@ public class AdMobAds extends CordovaPlugin {
     private boolean isTesting = false;
     private JSONObject adExtras = null;
 
-    public AdMobAds() {
+    public AdManager() {
         interstitialAd = new AdMobInterstitialAd(this, cordova.getActivity());
         rewardedAd = new AdMobRewardedAd(this, cordova.getActivity());
         appOpenAd = new AdMobAppOpenAd(this, cordova.getActivity());
