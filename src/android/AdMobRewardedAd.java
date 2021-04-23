@@ -20,7 +20,7 @@ import org.apache.cordova.CallbackContext;
 public class AdMobRewardedAd {
     public static final String ADMOBADS_LOGTAG = "AdmMobAds";
 
-    private String adType = "app_open";
+    private String adType = "rewarded";
     private AdManager adManager;
     private RewardedAd rewardedAd = null;
     private boolean isShowingAd = false;
@@ -36,6 +36,7 @@ public class AdMobRewardedAd {
 
     public void loadAd(String adId, CallbackContext callbackContext) {
         if (isAdAvailable()) {
+            adManager.onAdLoaded(adType);
             callbackContext.success();
             return;
         }

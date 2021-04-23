@@ -34,6 +34,7 @@ public class AdMobInterstitialAd {
 
     public void loadAd(String adId, CallbackContext callbackContext) {
         if (isAdAvailable()) {
+            adManager.onAdLoaded(adType);
             callbackContext.success();
             return;
         }
