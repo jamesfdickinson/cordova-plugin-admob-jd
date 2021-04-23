@@ -24,7 +24,7 @@ public class AdMobInterstitialAd {
     //private String appOpenId = "";
     private InterstitialAdLoadCallback loadCallback;
 
-    public AdMobInterstitialAd(AdManager admobAds, Activity activity) {
+    public AdMobInterstitialAd(AdManager admobAds) {
         this.adManager = admobAds;
     }
 
@@ -49,8 +49,17 @@ public class AdMobInterstitialAd {
                 adManager.onAdFailedToLoad(adType, loadAdError);
             }
         };
-        AdRequest request = new AdRequest.Builder().build();
-        InterstitialAd.load(getActivity(), adId, request, loadCallback);
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AdRequest request = new AdRequest.Builder().build();
+                InterstitialAd.load(getActivity(), adId, request, loadCallback);
+                if (callbackContext != null) {
+                    callbackContext.success();
+                }
+            }
+        });
     }
 
     public void showAdIfAvailable(CallbackContext callbackContext) throws Exception {

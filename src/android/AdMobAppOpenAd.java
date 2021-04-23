@@ -8,6 +8,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.appopen.AppOpenAd;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult;
@@ -22,7 +23,7 @@ public class AdMobAppOpenAd {
     //private String appOpenId = "";
     private AppOpenAd.AppOpenAdLoadCallback loadCallback;
 
-    public AdMobAppOpenAd(AdManager admobAds, Activity activity) {
+    public AdMobAppOpenAd(AdManager admobAds) {
         this.adManager = admobAds;
     }
 
@@ -47,8 +48,16 @@ public class AdMobAppOpenAd {
                 adManager.onAdFailedToLoad(adType, loadAdError);
             }
         };
-        AdRequest request = new AdRequest.Builder().build();
-        AppOpenAd.load(getActivity(), adId, request, AppOpenAd.APP_OPEN_AD_ORIENTATION_LANDSCAPE, loadCallback);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AdRequest request = new AdRequest.Builder().build();
+                AppOpenAd.load(getActivity(), adId, request, AppOpenAd.APP_OPEN_AD_ORIENTATION_LANDSCAPE, loadCallback);
+                if (callbackContext != null) {
+                    callbackContext.success();
+                }
+            }
+        });
     }
 
     public void showAdIfAvailable(CallbackContext callbackContext) throws Exception {

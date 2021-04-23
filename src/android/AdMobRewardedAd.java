@@ -10,6 +10,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.OnUserEarnedRewardListener;
+import com.google.android.gms.ads.appopen.AppOpenAd;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
@@ -25,7 +26,7 @@ public class AdMobRewardedAd {
     private boolean isShowingAd = false;
     private RewardedAdLoadCallback loadCallback;
     RewardItem rewardItemSave = null;
-    public AdMobRewardedAd(AdManager admobAds, Activity activity) {
+    public AdMobRewardedAd(AdManager admobAds) {
         this.adManager = admobAds;
     }
 
@@ -50,8 +51,16 @@ public class AdMobRewardedAd {
                 adManager.onAdFailedToLoad(adType,loadAdError);
             }
         };
-        AdRequest request = new AdRequest.Builder().build();
-        RewardedAd.load(getActivity(), adId, request,loadCallback);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AdRequest request = new AdRequest.Builder().build();
+                RewardedAd.load(getActivity(), adId, request,loadCallback);
+                if (callbackContext != null) {
+                    callbackContext.success();
+                }
+            }
+        });
     }
 
     public void showAdIfAvailable(CallbackContext callbackContext) throws Exception {

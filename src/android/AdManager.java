@@ -77,9 +77,9 @@ public class AdManager extends CordovaPlugin {
     private JSONObject adExtras = null;
 
     public AdManager() {
-        interstitialAd = new AdMobInterstitialAd(this, cordova.getActivity());
-        rewardedAd = new AdMobRewardedAd(this, cordova.getActivity());
-        appOpenAd = new AdMobAppOpenAd(this, cordova.getActivity());
+        interstitialAd = new AdMobInterstitialAd(this);
+        rewardedAd = new AdMobRewardedAd(this);
+        appOpenAd = new AdMobAppOpenAd(this);
     }
 
     /**

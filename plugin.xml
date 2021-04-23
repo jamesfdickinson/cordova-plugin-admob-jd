@@ -21,7 +21,11 @@
 	<!-- android -->
 	<platform name="android">
 		<preference name="ADMOB_APP_ID" />
-
+		<config-file target="res/xml/config.xml" parent="/*">
+			<feature name="AdManager">
+				<param name="android-package" value="com.jdsoftwarellc.cordova.admob.AdManager" />
+			</feature>
+		</config-file>
 		<framework src="com.google.android.gms:play-services-ads:20.0.0" />
 
 		<config-file target="AndroidManifest.xml" parent="/manifest/application">
