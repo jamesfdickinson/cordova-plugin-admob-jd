@@ -4,7 +4,7 @@
 #import "CDVAdManager.h"
 #import "MainViewController.h"
 
-@interface CDVAdManager() 
+@interface CDVAdManager()
 
 
 @property( assign) NSInteger rewardAmount;
@@ -16,16 +16,11 @@
 - (BOOL) __createRewarded:(NSString *)_iid ;
 - (BOOL) __showRewarded:(BOOL)show;
 - (GADRequest*) __buildAdRequest;
-- (NSString *) __admobDeviceID;
-- (NSString *) __getPublisherId;
-- (NSString *) __getPublisherId:(BOOL)isTappx;
-- (NSString *) __getInterstitialId:(BOOL)isBackFill;
+- (NSString *) __getInterstitialId;
 - (NSString *) __getRewardedId;
 - (NSString *) __getAppOpenId;
 
 - (void)resizeViews;
-
-- (GADAdSize)__adSizeFromString:(NSString *)string;
 
 - (void)deviceOrientationChange:(NSNotification *)notification;
 
@@ -49,8 +44,8 @@
 @synthesize isRewardedAvailable;
 @synthesize isAppOpenAvailable;
 
-@synthesize interstitialView;
-@synthesize rewardedView;
+@synthesize interstitialAd;
+@synthesize rewardedAd;
 @synthesize appOpenAd;
 
 
@@ -107,9 +102,6 @@
     [self.commandDelegate runInBackground:^{
         CDVPluginResult *pluginResult;
         
-        if (!self.isAppOpenAvailable && self.appOpenAd) {
-            self.appOpenAd = nil;
-        }
         
         if (!self.appOpenAd) {
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"App Open Ad is null, call requestAppOpenAd first."];
@@ -130,14 +122,10 @@
     [self.commandDelegate runInBackground:^{
         CDVPluginResult *pluginResult;
         
-        if (!isInterstitialAvailable && interstitialView) {
-            self.interstitialView.delegate = nil;
-            self.interstitialView = nil;
-        }
-        
-        if (!self.interstitialView) {
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"interstitialAd is null, call requestInterstitialAd first."];
-            
+        if (!self.interstitialAd) {
+            //pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"interstitialAd is null, call requestInterstitialAd first."];
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"interstitialAd is null, called requestInterstitialAd."];
+            [self requestInterstitialAd:command];
         } else {
             if (![self __showInterstitial:YES]) {
                 pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Advertising tracking may be disabled. To get test ads on this device, enable advertising tracking."];
@@ -156,14 +144,11 @@
     [self.commandDelegate runInBackground:^{
         CDVPluginResult *pluginResult;
         
-        if (!isRewardedAvailable && rewardedView) {
-            ////self.rewardedView.delegate = nil;
-            self.rewardedView = nil;
-        }
-        
-        if (!self.rewardedView) {
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"rewardedView is null, call requestRewardedAd first."];
-            
+
+        if (!self.rewardedAd) {
+            //pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"rewardedAd is null, call requestRewardedAd first."];
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"rewardedAd is null, called requestRewardedAd."];
+            [self requestRewardedAd:command];
         } else {
             if (![self __showRewarded:YES]) {
                 pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Advertising tracking may be disabled. To get test ads on this device, enable advertising tracking."];
@@ -175,37 +160,6 @@
         [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
     }];
 }
-
-- (void)onAdLoaded:(NSString *)adType {
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        NSString *jsString = [NSString stringWithFormat: @"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdLoaded, { 'adType' : '%@' }); }, 1);", adType];
-        [self.commandDelegate evalJs:jsString];
-    }];
-}
-
-- (void)onAdFailedToLoad:(NSString *,NSError)adType, error {
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        NSString *jsString = [NSString stringWithFormat: @"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdFailedToLoad, { 'adType' : '%@','error':'%@' }); }, 1);", adType];
-        [self.commandDelegate evalJs:jsString];
-    }];
-}
-- (void)onAdRewarded:(GADAdReward *)reward {
-    //Reward the user.
-    NSLog(@"rewardedAd:userDidEarnReward:");
-    self.rewardAmount = [reward.amount integerValue];
-    self.rewardType = reward.type;
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        NSString *jsString =
-        [NSString stringWithFormat:
-         @"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdRewarded, { 'adType' : 'rewarded','rewardType': '%@','rewardAmount': %ld }); }, 1);"
-         ,self.rewardType
-         ,(long)self.rewardAmount
-         ];
-        [self.commandDelegate evalJs:jsString];
-        self.isRewardedAvailable = false;
-    }];
-}
-
 
 - (void)requestInterstitialAd:(CDVInvokedUrlCommand *)command {
     NSString *callbackId = command.callbackId;
@@ -220,16 +174,10 @@
     [self.commandDelegate runInBackground:^{
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
         
-        if (!isInterstitialAvailable && interstitialView) {
-            self.interstitialView.delegate = nil;
-            self.interstitialView = nil;
-        }
-        
-        if (isInterstitialAvailable) {
-            [self onAdLoaded:"interstitial"];
-            
-        } else if (!self.interstitialView) {
-            NSString *_iid = [self __getInterstitialId:false];
+        if (interstitialAd) {
+            [self onAdLoaded:@"interstitial"];
+        } else if (!self.interstitialAd) {
+            NSString *_iid = [self __getInterstitialId];
             
             if (![self __createInterstitial:_iid ]) {
                 pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Advertising tracking may be disabled. To get test ads on this device, enable advertising tracking."];
@@ -252,12 +200,10 @@
     
     [self.commandDelegate runInBackground:^{
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-        if (!self.isAppOpenAvailable && self.appOpenAd) {
-            self.appOpenAd = nil;
-        }
+
         
-        if (self.isAppOpenAvailable) {
-//            
+        if (self.appOpenAd) {
+            [self onAdLoaded:@"app_open"];
         } else if (!self.appOpenAd) {
             NSString *_iid = [self __getAppOpenId];
             if (![self __createAppOpen:_iid ]) {
@@ -281,15 +227,9 @@
     [self.commandDelegate runInBackground:^{
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
         
-        if (!isRewardedAvailable && rewardedView) {
-            ////self.rewardedView.delegate = nil;
-            self.rewardedView = nil;
-        }
-        
-        if (isRewardedAvailable) {
-              [self onAdLoaded:"rewarded"];
-            
-        } else if (!self.rewardedView) {
+        if (rewardedAd) {
+            [self onAdLoaded:@"rewarded"];
+        } else if (!self.rewardedAd) {
             NSString *_iid = [self __getRewardedId];
             
             if (![self __createRewarded:_iid ]) {
@@ -302,12 +242,7 @@
 }
 
 
-- (NSString *) __getPublisherId {
-    return [self __getPublisherId:hasTappx];
-}
-
-
-- (NSString *) __getInterstitialId:(BOOL)isBackFill {
+- (NSString *) __getInterstitialId {
     NSString *_interstitialAdId = interstitialAdId;
     
     return _interstitialAdId;
@@ -334,10 +269,6 @@
     
     NSString* str = nil;
     
-    str = [options objectForKey:OPT_PUBLISHER_ID];
-    if (str && ![str isEqual:[NSNull null]] && [str length] > 0) {
-        bannerAdId = str;
-    }
     
     str = [options objectForKey:OPT_INTERSTITIAL_ADID];
     if (str && ![str isEqual:[NSNull null]] && [str length] > 0) {
@@ -379,7 +310,7 @@
     return request;
 }
 
-- (BOOL) __createAppOpen:(NSString *)_appOpenId withAdListener:(CDVAdManagerAdListener *) adListener {
+- (BOOL) __createAppOpen:(NSString *)_appOpenId {
     BOOL succeeded = false;
     
     if (self.appOpenAd) {
@@ -387,23 +318,18 @@
     }
     
     GADRequest *request = [self __buildAdRequest];
-    if (!request) {
-        succeeded = false;
-        if (self.appOpenAd) {
-            self.appOpenAd = nil;
-        }
-    } else {
+    dispatch_async(dispatch_get_main_queue(), ^{
         [GADAppOpenAd loadWithAdUnitID:_appOpenId request:request orientation:UIInterfaceOrientationPortrait completionHandler:^(GADAppOpenAd * _Nullable appOpenAd, NSError * _Nullable error) {
             if (error) {
                 NSLog(@"Failed to load app open ad: %@", error);
-                [self onAdFailedToLoad:"app_open" :error];
+                [self onAdFailedToLoad:@"app_open"  withError:error];
                 return;
             }
             self.appOpenAd.fullScreenContentDelegate = self;
             self.appOpenAd = appOpenAd;
-            [self onAdLoaded:"app_open"];
+            [self onAdLoaded:@"app_open"];
         }];
-    }
+    });
     return succeeded;
 }
 
@@ -427,13 +353,12 @@
     return succeeded;
 }
 
-- (BOOL) __createInterstitial:(NSString *)_iid withAdListener:(CDVAdManagerAdListener *) adListener {
+- (BOOL) __createInterstitial:(NSString *)_iid {
     BOOL succeeded = true;
     
     // Clean up the old interstitial...
-    if (self.interstitialView) {
-        self.interstitialView.delegate = nil;
-        self.interstitialView = nil;
+    if (self.interstitialAd) {
+        self.interstitialAd = nil;
     }
 
     GADRequest *request = [self __buildAdRequest];
@@ -441,14 +366,14 @@
         [GADInterstitialAd loadWithAdUnitID:_iid request:request completionHandler:^(GADInterstitialAd *ad, NSError *error) {
             if (error) {
                 NSLog(@"Failed to load interstitial ad with error: %@", [error localizedDescription]);
-                [self onAdFailedToLoad:"interstitial" :error];
+                [self onAdFailedToLoad:@"interstitial"  withError:error];
                 self.isInterstitialAvailable = false;
                 return;
             }
-            self.interstitialView = ad;
-            self.interstitialView.fullScreenContentDelegate = self;
+            self.interstitialAd = ad;
+            self.interstitialAd.fullScreenContentDelegate = self;
             self.isInterstitialAvailable = true;
-            [self onAdLoaded:"interstitial"]
+            [self onAdLoaded:@"interstitial"];
         }];
     });
   
@@ -458,18 +383,16 @@
 - (BOOL) __showInterstitial:(BOOL)show {
     BOOL succeeded = false;
     
-    if (!self.interstitialView) {
-        NSString *_iid = [self __getInterstitialId:false];
-        
+    if (!self.interstitialAd) {
+        NSString *_iid = [self __getInterstitialId];
         succeeded = [self __createInterstitial:_iid ];
-        
     } else {
         succeeded = true;
     }
     
-    if (self.interstitialView && self.interstitialView.isReady) {
+    if (self.interstitialAd) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.interstitialView presentFromRootViewController:self.viewController];
+            [self.interstitialAd presentFromRootViewController:self.viewController];
         });
     }
     
@@ -477,23 +400,23 @@
 }
 
 
-- (BOOL) __createRewarded:(NSString *)_iid withAdListener:(CDVAdManagerAdListener *) adListener {
+- (BOOL) __createRewarded:(NSString *)_iid {
     BOOL succeeded = true;
 
-    if (self.rewardedView) {
-        self.rewardedView = nil;
+    if (self.rewardedAd) {
+        self.rewardedAd = nil;
     }
     GADRequest *request = [self __buildAdRequest];
     dispatch_async(dispatch_get_main_queue(), ^{
         [GADRewardedAd  loadWithAdUnitID: _iid  request:request  completionHandler:^(GADRewardedAd *ad, NSError *error) {
         if (error) {
           NSLog(@"Rewarded ad failed to load with error: %@", [error localizedDescription]);
-          [self onAdFailedToLoad:"rewarded" :error];
+          [self onAdFailedToLoad:@"rewarded" withError:error];
           return;
         }
-        self.rewardedView = ad;
-        self.rewardedView.fullScreenContentDelegate = self;
-        [self onAdLoaded:"rewarded"]
+        self.rewardedAd = ad;
+        self.rewardedAd.fullScreenContentDelegate = self;
+        [self onAdLoaded:@"rewarded"];
       }];
     });
 
@@ -503,14 +426,14 @@
 - (BOOL) __showRewarded:(BOOL)show {
     BOOL succeeded = false;
     
-    if (!self.rewardedView) {
+    if (!self.rewardedAd) {
         NSString *_iid = [self __getRewardedId];
         succeeded = [self __createRewarded:_iid ];
     } else {
         succeeded = true;
     }
     
-    if (self.rewardedView && self.rewardedView.isReady) {
+    if (self.rewardedAd) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.rewardedAd presentFromRootViewController:self.viewController userDidEarnRewardHandler:^{
                                   GADAdReward *reward =  self.rewardedAd.adReward;
@@ -523,58 +446,122 @@
 }
 
 //events
-
-/// Tells the delegate that the ad failed to present full screen content.
-- (void)ad:(nonnull id<GADFullScreenPresentingAd>)ad 
-didFailToPresentFullScreenContentWithError:(nonnull NSError *)error {
+- (void)onAdLoaded:(NSString *)adType {
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        NSString *jsString = [NSString stringWithFormat: @"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdLoaded, { 'adType' : '%@' }); }, 1);", adType];
+        [self.commandDelegate evalJs:jsString];
+    }];
+}
+- (void)onAdOpened:(NSString *)adType {
+    self.rewardAmount = 0;
+    self.rewardType = @"";
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        NSString *jsString = [NSString stringWithFormat: @"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdOpened, { 'adType' : '%@' }); }, 1);", adType];
+        [self.commandDelegate evalJs:jsString];
+    }];
+}
+- (void)onAdFailedToLoad:(NSString *)adType withError:(NSError *) error {
     NSString *reason = [error localizedDescription];
-    NSLog(@"Admob Ad failed to present full screen content with error %@.", reason);
-    adMobAds.isInterstitialAvailable = false;
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         NSString *jsString =
         [NSString stringWithFormat:
-        @"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdFailedToLoad, "
-        @"{ 'adType' : 'interstitial', 'error': %ld, 'reason': '%@' }); }, 1);"
+        @"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdFailedToLoad, { 'adType' : '%@', 'error': %ld, 'reason': '%@' }); }, 1);"
+        ,adType
         ,(long)error.code
         , reason
         ];
         [self.commandDelegate evalJs:jsString];
     }];
 }
-
-/// Tells the delegate that the ad presented full screen content.
-- (void)adDidPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
-    NSLog(@"Ad did present full screen content.");
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        [self.commandDelegate evalJs:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdOpened, { 'adType' : 'rewarded' }); }, 1);"];
-    }];
-    self.rewardAmount = 0;
-    self.rewardType = @"";
-}
-
-/// Tells the delegate that the ad dismissed full screen content.
-- (void)adDidDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
-    NSLog(@"Ad did dismiss full screen content.");
+- (void)onAdRewarded:(GADAdReward *)reward {
+    //Reward the user.
+    NSLog(@"rewardedAd:userDidEarnReward:");
+    self.rewardAmount = [reward.amount integerValue];
+    self.rewardType = reward.type;
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         NSString *jsString =
         [NSString stringWithFormat:
-        @"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdClosed, { 'adType' : 'rewarded','rewardType': '%@','rewardAmount': %ld }); }, 1);"
+         @"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdRewarded, { 'adType' : 'rewarded','rewardType': '%@','rewardAmount': %ld }); }, 1);"
+         ,self.rewardType
+         ,(long)self.rewardAmount
+         ];
+        [self.commandDelegate evalJs:jsString];
+        self.isRewardedAvailable = false;
+    }];
+}
+- (void)onAdClosed:(NSString *)adType {
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        NSString *jsString =
+        [NSString stringWithFormat:
+        @"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdClosed, { 'adType' : '%@','rewardType': '%@','rewardAmount': %ld }); }, 1);"
+        ,adType
         ,self.rewardType
         ,(long)self.rewardAmount
         ];
         [self.commandDelegate evalJs:jsString];
     }];
+    if([adType isEqualToString: @"interstitial"]) self.interstitialAd = nil;
+    if([adType isEqualToString: @"rewarded" ]) self.rewardedAd = nil;
+    if([adType isEqualToString: @"app_open" ]) self.appOpenAd = nil;
+}
+- (void)onAdError:(NSString *)adType withError:(NSError *) error {
+    NSString *reason = [error localizedDescription];
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        NSString *jsString =
+        [NSString stringWithFormat:
+        @"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onError, { 'adType' : '%@', 'error': %ld, 'reason': '%@' }); }, 1);"
+        ,adType
+        ,(long)error.code
+        , reason
+        ];
+        [self.commandDelegate evalJs:jsString];
+    }];
+    if([adType isEqualToString: @"interstitial"]) self.interstitialAd = nil;
+    if([adType isEqualToString: @"rewarded" ]) self.rewardedAd = nil;
+    if([adType isEqualToString: @"app_open" ]) self.appOpenAd = nil;
 }
 
+#pragma GADFullScreeContentDelegate implementation
+
+- (void)ad:(nonnull id<GADFullScreenPresentingAd>)ad 
+didFailToPresentFullScreenContentWithError:(nonnull NSError *)error {
+     NSLog(@"Ad did fail to present full screen content.");
+    NSString *adType = @"";
+    if([ad isKindOfClass:[GADInterstitialAd class]]) adType = @"interstitial";
+    if([ad isKindOfClass:[GADRewardedAd class]]) adType = @"rewarded";
+    if([ad isKindOfClass:[GADAppOpenAd class]]) adType = @"app_open";
+
+    [self onAdError:@"rewarded" withError:error];
+}
+
+/// Tells the delegate that the ad presented full screen content.
+- (void)adDidPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
+    NSLog(@"Ad did present full screen content.");
+    NSString *adType = @"";
+    if([ad isKindOfClass:[GADInterstitialAd class]]) adType = @"interstitial";
+    if([ad isKindOfClass:[GADRewardedAd class]]) adType = @"rewarded";
+    if([ad isKindOfClass:[GADAppOpenAd class]]) adType = @"app_open";
+    [self onAdOpened:adType];
+}
+
+/// Tells the delegate that the ad dismissed full screen content.
+- (void)adDidDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
+    NSLog(@"Ad did dismiss full screen content.");
+    NSString *adType = @"";
+    if([ad isKindOfClass:[GADInterstitialAd class]]) adType = @"interstitial";
+    if([ad isKindOfClass:[GADRewardedAd class]]) adType = @"rewarded";
+    if([ad isKindOfClass:[GADAppOpenAd class]]) adType = @"app_open";
+    [self onAdClosed:adType];
+}
 
 
 #pragma mark -
 
 
 - (void)deviceOrientationChange:(NSNotification *)notification {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self resizeViews];
-    });
+   // dispatch_async(dispatch_get_main_queue(), ^{
+    //    [self resizeViews];
+   // });
 }
 
 #pragma mark -
@@ -587,12 +574,10 @@ didFailToPresentFullScreenContentWithError:(nonnull NSError *)error {
      name:UIDeviceOrientationDidChangeNotification
      object:nil];
     
-
-    interstitialView.delegate = nil;
-    interstitialView = nil;
+    interstitialAd = nil;
     
-    ////rewardedView.delegate = nil;
-    rewardedView = nil;
+    ////rewardedAd.delegate = nil;
+    rewardedAd = nil;
 
     
     adExtras = nil;

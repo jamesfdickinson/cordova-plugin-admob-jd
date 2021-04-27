@@ -5,12 +5,11 @@
 #import <UIKit/UIKit.h>
 
 #import <GoogleMobileAds/GoogleMobileAds.h>
-#import "CDVAdManagerAdListener.h"
 
 
 #pragma mark - JS requestAd options
 
-@class GADInterstitial;
+@class GADInterstitialAd;
 @class GADRewardAd;
 @class GADAppOpenAd;
 
@@ -23,8 +22,8 @@
 @property (assign) BOOL isRewardedAvailable;
 @property (assign) BOOL isAppOpenAvailable;
 
-@property (nonatomic, retain) GADInterstitial *interstitialView;
-@property (nonatomic, retain) GADRewardedAd *rewardedView;
+@property (nonatomic, retain) GADInterstitialAd  *interstitialAd;
+@property (nonatomic, retain) GADRewardedAd *rewardedAd;
 @property (nonatomic, retain) GADAppOpenAd* appOpenAd;
 
 
@@ -49,7 +48,7 @@
 - (void)requestAppOpenAd:(CDVInvokedUrlCommand *)command;
 - (void)showAppOpenAd:(CDVInvokedUrlCommand *)command;
 
-- (void)onInterstitialAd:(GADInterstitial *)interstitial;
+- (void)onInterstitialAd:(GADInterstitialAd *)interstitial;
 - (void)onRewardedAd:(GADRewardedAd *)rewarded ;
 - (void)onAppOpenAd:(GADAppOpenAd *)appOpenAd ;
 
