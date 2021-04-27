@@ -58,8 +58,7 @@
 
 		<header-file src="src/ios/CDVAdManager.h" />
 		<source-file src="src/ios/CDVAdManager.m" />
-		<header-file src="src/ios/CDVAdManagerAdListener.h" />
-		<source-file src="src/ios/CDVAdManagerAdListener.m" />
+
 
 		<!-- Google AdMob framework -->
 		<!-- <framework src="Google-Mobile-Ads-SDK" type="podspec" /> -->
