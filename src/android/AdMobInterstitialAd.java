@@ -35,7 +35,7 @@ public class AdMobInterstitialAd {
     public void loadAd(String adId, CallbackContext callbackContext) {
         if (isAdAvailable()) {
             adManager.onAdLoaded(adType);
-            callbackContext.success();
+            if (callbackContext != null) { callbackContext.success();}
             return;
         }
         loadCallback = new InterstitialAdLoadCallback() {
@@ -43,11 +43,13 @@ public class AdMobInterstitialAd {
             public void onAdLoaded(@NonNull InterstitialAd ad) {
                 interstitialAd = ad;
                 adManager.onAdLoaded(adType);
+                if (callbackContext != null) { callbackContext.success();}
             }
 
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                 adManager.onAdFailedToLoad(adType, loadAdError);
+                if (callbackContext != null) { callbackContext.error(loadAdError);}
             }
         };
 
@@ -56,9 +58,6 @@ public class AdMobInterstitialAd {
             public void run() {
                 AdRequest request = new AdRequest.Builder().build();
                 InterstitialAd.load(getActivity(), adId, request, loadCallback);
-                if (callbackContext != null) {
-                    callbackContext.success();
-                }
             }
         });
     }

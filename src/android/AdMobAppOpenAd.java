@@ -34,7 +34,7 @@ public class AdMobAppOpenAd {
     public void loadAd(String adId, CallbackContext callbackContext) {
         if (isAdAvailable()) {
             adManager.onAdLoaded(adType);
-            callbackContext.success();
+            if (callbackContext != null) { callbackContext.success(); }
             return;
         }
         loadCallback = new AppOpenAd.AppOpenAdLoadCallback() {
@@ -42,11 +42,13 @@ public class AdMobAppOpenAd {
             public void onAdLoaded(AppOpenAd ad) {
                 appOpenAd = ad;
                 adManager.onAdLoaded(adType);
+                if (callbackContext != null) { callbackContext.success();}
             }
 
             @Override
             public void onAdFailedToLoad(LoadAdError loadAdError) {
                 adManager.onAdFailedToLoad(adType, loadAdError);
+                if (callbackContext != null) { callbackContext.error(loadAdError);}
             }
         };
         getActivity().runOnUiThread(new Runnable() {
@@ -54,9 +56,6 @@ public class AdMobAppOpenAd {
             public void run() {
                 AdRequest request = new AdRequest.Builder().build();
                 AppOpenAd.load(getActivity(), adId, request, AppOpenAd.APP_OPEN_AD_ORIENTATION_LANDSCAPE, loadCallback);
-                if (callbackContext != null) {
-                    callbackContext.success();
-                }
             }
         });
     }
