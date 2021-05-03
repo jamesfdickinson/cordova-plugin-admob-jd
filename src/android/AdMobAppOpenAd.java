@@ -54,6 +54,7 @@ public class AdMobAppOpenAd {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                appOpenAd = null;
                 AdRequest request = new AdRequest.Builder().build();
                 AppOpenAd.load(getActivity(), adId, request, AppOpenAd.APP_OPEN_AD_ORIENTATION_LANDSCAPE, loadCallback);
             }

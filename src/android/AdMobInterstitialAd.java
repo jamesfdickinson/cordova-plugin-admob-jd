@@ -56,6 +56,7 @@ public class AdMobInterstitialAd {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                interstitialAd = null;
                 AdRequest request = new AdRequest.Builder().build();
                 InterstitialAd.load(getActivity(), adId, request, loadCallback);
             }

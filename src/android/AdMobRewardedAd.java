@@ -57,6 +57,7 @@ public class AdMobRewardedAd {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                rewardedAd = null;
                 AdRequest request = new AdRequest.Builder().build();
                 RewardedAd.load(getActivity(), adId, request,loadCallback);
             }
