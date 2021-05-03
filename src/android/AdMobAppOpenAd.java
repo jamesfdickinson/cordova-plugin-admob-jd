@@ -48,7 +48,7 @@ public class AdMobAppOpenAd {
             @Override
             public void onAdFailedToLoad(LoadAdError loadAdError) {
                 adManager.onAdFailedToLoad(adType, loadAdError);
-                if (callbackContext != null) { callbackContext.error(loadAdError);}
+                if (callbackContext != null) { callbackContext.error(loadAdError.toString());}
             }
         };
         getActivity().runOnUiThread(new Runnable() {
