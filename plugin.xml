@@ -20,16 +20,18 @@
 
 	<!-- android -->
 	<platform name="android">
-		<preference name="ADMOB_APP_ID" />
+		<preference name="APP_ID_ANDROID" default="ca-app-pub-xxx~yyy" />
+		<preference name="PLAY_SERVICES_VERSION" default="20.1.0" />
+
 		<config-file target="res/xml/config.xml" parent="/*">
 			<feature name="AdManager">
 				<param name="android-package" value="com.jdsoftwarellc.cordova.admob.AdManager" />
 			</feature>
 		</config-file>
-		<framework src="com.google.android.gms:play-services-ads:20.1.0" />
+		<framework src="com.google.android.gms:play-services-ads:$PLAY_SERVICES_VERSION" />
 
 		<config-file target="AndroidManifest.xml" parent="/manifest/application">
-			<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="$ADMOB_APP_ID"/>
+			<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="$APP_ID_ANDROID"/>
 		</config-file>
 
 		<config-file target="AndroidManifest.xml" parent="/*">
@@ -45,11 +47,154 @@
 
 	<!-- ios -->
 	<platform name="ios">
-		<preference name="IOS_APP_ID" />
+		<preference name="APP_ID_IOS" default="ca-app-pub-xxx~yyy" />
+ 		<preference name="USAGE" default="This identifier will be used to deliver personalized ads to you." />
 
 		<config-file target="*-Info.plist" parent="GADApplicationIdentifier">
-			<string>$IOS_APP_ID</string>
+			<string>$APP_ID_IOS</string>
 		</config-file>
+		<config-file target="*-Info.plist" parent="NSUserTrackingUsageDescription">
+            <string>$USAGE</string>
+        </config-file>
+		<!-- SKAdNetworkItems -->
+		<!-- Todo: Update list on each release from https://developers.google.com/admob/ios/ios14?hl=en-US -->
+        <config-file target="*-Info.plist" parent="SKAdNetworkItems">
+			  <array>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>cstr6suwn9.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>4fzdc2evr5.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>2fnua5tdw4.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>ydx93a7ass.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>5a6flpkh64.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>p78axxw29g.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>v72qych5uu.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>c6k4g5qg8m.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>s39g8k73mm.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>3qy4746246.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>3sh42y64q3.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>f38h382jlk.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>hs6bdukanm.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>prcb7njmu6.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>wzmmz9fp6w.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>yclnxrl5pm.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>4468km3ulz.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>t38b2kh725.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>7ug5zh24hu.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>9rd848q2bz.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>n6fk4nfna4.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>kbd757ywx3.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>9t245vhmpl.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>2u9pt9hc89.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>8s468mfl3y.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>av6w8kgt66.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>klf5c3l5u5.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>ppxm28t8ap.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>424m5254lk.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>uw77j35x4d.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>e5fvkxwrpn.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>zq492l623r.skadnetwork</string>
+				</dict>
+				<dict>
+				<key>SKAdNetworkIdentifier</key>
+				<string>3qcr597p9d.skadnetwork</string>
+				</dict>
+			</array>
+        </config-file>
+
 		<config-file target="config.xml" parent="/*">
 			<feature name="AdManager">
 				<param name="ios-package" value="CDVAdManager" />
@@ -59,19 +204,25 @@
 		<header-file src="src/ios/CDVAdManager.h" />
 		<source-file src="src/ios/CDVAdManager.m" />
 
+		<!-- The UMP SDK provides tools for publishers (ATT and GDPR) https://developers.google.com/admob/ump/ios/quick-start -->
+		<!--ATT - Request App Tracking Transparency authorization https://developers.google.com/admob/ios/ios14?hl=en-US -->
+		<!-- Shoud I use Apple’s ATT prompt?#
+		As part of iOS 14, you may choose to employ the new AppTrackingTransparency (ATT) framework by calling admob.requestTrackingAuthorization().
 
-		<!-- Google AdMob framework -->
-		<!-- <framework src="Google-Mobile-Ads-SDK" type="podspec" /> -->
-		<!-- <framework src="Firebase/Analytics" type="podspec" />
-    <framework src="Firebase/AdMob" type="podspec" /> -->
+		If your app is not using ATT, you need to state that during submission or your app may be rejected.
+
+		If your app integrates AppTrackingTransparency, please indicate where in your app we can find the AppTrackingTransparency permission request.
+
+		If your app does not integrate AppTrackingTransparency, please indicate this information in the Review Notes section for each version of your app in App Store Connect when submitting for review.
+		https://admob-plus.github.io/docs/cordova/faq -->
+		<!-- <framework src="AppTrackingTransparency.framework" weak="true" /> -->
+
 		<podspec>
 			<config>
 				<source url="https://cdn.cocoapods.org/"/>
 			</config>
 			<pods>
-				<pod name="Google-Mobile-Ads-SDK" />
-				<!-- <pod name="Firebase/Analytics" />
-                <pod name="Firebase/AdMob" /> -->
+				<pod name="Google-Mobile-Ads-SDK" spec="~> 8.5.0" />
 			</pods>
 		</podspec>
 	</platform>
