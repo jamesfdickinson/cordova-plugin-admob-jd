@@ -19,5 +19,5 @@ Run pod repo update and cd platforms/ios && pod install --repo-update to ensure 
 A clean build / remove then re-add the plugin may be necessary.
 
 # Change Log
-## 1.1.3
+## 1.2
 - Added SKAdNetworkItems for iOS
