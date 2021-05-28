@@ -21,6 +21,7 @@ public class AdMobInterstitialAd {
     private AdManager adManager;
     private InterstitialAd interstitialAd = null;
     private boolean isShowingAd = false;
+    private String adId = null;
     //private String appOpenId = "";
     private InterstitialAdLoadCallback loadCallback;
 
@@ -33,6 +34,7 @@ public class AdMobInterstitialAd {
     }
 
     public void loadAd(String adId, CallbackContext callbackContext) {
+        this.adId = adId;
         if (isAdAvailable()) {
             adManager.onAdLoaded(adType);
             if (callbackContext != null) { callbackContext.success();}
@@ -64,7 +66,10 @@ public class AdMobInterstitialAd {
     }
 
     public void showAdIfAvailable(CallbackContext callbackContext) throws Exception {
-        if (!isShowingAd && isAdAvailable()) {
+        if(isShowingAd){
+            throw new Exception("Ad is currently showing an ad");
+        }
+        if (isAdAvailable()) {
             Log.d(ADMOBADS_LOGTAG, "Going to show app open ad");
             FullScreenContentCallback fullScreenContentCallback = new FullScreenContentCallback() {
                 @Override
@@ -98,7 +103,9 @@ public class AdMobInterstitialAd {
                 }
             });
 
-        } else {
+        } else if(!this.isAdAvailable() && this.adId != null){
+                this.loadAd(this.adId,callbackContext);
+        }else{
             throw new Exception("Ad not loaded, call request Ad first.");
         }
         return;
