@@ -29,8 +29,9 @@ public class AdManager extends CordovaPlugin {
     private static final String ACTION_SHOW_REWARDED_AD = "showRewardedAd";
     private static final String ACTION_REQUEST_APP_OPEN_AD = "requestAppOpenAd";
     private static final String ACTION_SHOW_APP_OPEN_AD = "showAppOpenAd";
+    private static final String ACTION_SHOW_MEDIATION_TEST_SUITE = "showMediationTestSuite";
 
-
+    
     /* options */
     private static final String OPT_APP_ID = "appId";
     private static final String OPT_PUBLISHER_ID = "publisherId";
@@ -117,6 +118,8 @@ public class AdManager extends CordovaPlugin {
             result = executeRequestAppOpenAd(options, callbackContext);
         } else if (ACTION_SHOW_APP_OPEN_AD.equals(action)) {
             result = executeShowAppOpenAd(callbackContext);
+        } else if (ACTION_SHOW_MEDIATION_TEST_SUITE.equals(action)) {
+            result = executeShowMediationTestSuite(callbackContext);
         } else {
             Log.d(ADMOBADS_LOGTAG, String.format("Invalid action passed: %s", action));
             return false;
@@ -245,6 +248,15 @@ public class AdManager extends CordovaPlugin {
         }
         return null;
     }
+    private PluginResult executeShowMediationTestSuite(CallbackContext callbackContext) {
+        try {
+            MediationTestSuite.launch(this.cordova.getActivity());
+        } catch (Exception ex) {
+            return new PluginResult(Status.ERROR, "ShowMediationTestSuite Error. " + ex);
+        }
+        return null;
+    }
+   
     ///////////////////Events///////////////////////
     @Override
     public void onPause(boolean multitasking) {

@@ -22,6 +22,7 @@
 	<platform name="android">
 		<preference name="APP_ID_ANDROID" default="ca-app-pub-xxx~yyy" />
 		<preference name="PLAY_SERVICES_VERSION" default="20.6.0" />
+		<preference name="MEDIATION_TEST_SUITE_VERSION" default="2.0.0" />
 
 		<config-file target="res/xml/config.xml" parent="/*">
 			<feature name="AdManager">
@@ -29,6 +30,7 @@
 			</feature>
 		</config-file>
 		<framework src="com.google.android.gms:play-services-ads:$PLAY_SERVICES_VERSION" />
+		<framework src="com.google.android.ads:mediation-test-suite:$MEDIATION_TEST_SUITE_VERSION" />
 
 		<config-file target="AndroidManifest.xml" parent="/manifest/application">
 			<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="$APP_ID_ANDROID"/>
