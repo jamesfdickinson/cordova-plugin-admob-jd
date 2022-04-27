@@ -29,9 +29,10 @@
 				<param name="android-package" value="com.jdsoftwarellc.cordova.admob.AdManager" />
 			</feature>
 		</config-file>
+
 		<framework src="com.google.android.gms:play-services-ads:$PLAY_SERVICES_VERSION" />
-		<framework src="com.google.android.ads:mediation-test-suite:$MEDIATION_TEST_SUITE_VERSION" />
 		<framework src="com.google.android.flexbox:flexbox:3.0.0" />
+		<framework src="com.google.android.ads:mediation-test-suite:$MEDIATION_TEST_SUITE_VERSION" />
 
 		<config-file target="AndroidManifest.xml" parent="/manifest/application">
 			<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="$APP_ID_ANDROID"/>
