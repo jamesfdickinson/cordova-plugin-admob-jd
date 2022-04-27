@@ -1,0 +1,7 @@
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'com.google.android.ads:mediation-test-suite:2.0.0'
+}

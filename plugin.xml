@@ -22,7 +22,6 @@
 	<platform name="android">
 		<preference name="APP_ID_ANDROID" default="ca-app-pub-xxx~yyy" />
 		<preference name="PLAY_SERVICES_VERSION" default="20.6.0" />
-		<preference name="MEDIATION_TEST_SUITE_VERSION" default="2.0.0" />
 
 		<config-file target="res/xml/config.xml" parent="/*">
 			<feature name="AdManager">
@@ -31,8 +30,10 @@
 		</config-file>
 
 		<framework src="com.google.android.gms:play-services-ads:$PLAY_SERVICES_VERSION" />
-		<framework src="com.google.android.flexbox:flexbox:3.0.0" />
-		<framework src="com.google.android.ads:mediation-test-suite:$MEDIATION_TEST_SUITE_VERSION" />
+
+		<!-- Todo: split mediation-test-suite into own plugin-->
+		<!-- mediation-test-suite needs repositories jcenter(). jcenter note https://blog.gradle.org/jcenter-shutdown#:~:text=The%20jcenter()%20method%20will,may%20only%20publish%20new%20versions.-->
+		<framework src="src/android/plugin.gradle" custom="true" type="gradleReference"/>
 
 		<config-file target="AndroidManifest.xml" parent="/manifest/application">
 			<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="$APP_ID_ANDROID"/>

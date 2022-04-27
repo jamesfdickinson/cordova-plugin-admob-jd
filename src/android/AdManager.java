@@ -16,7 +16,7 @@ import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.rewarded.RewardItem;
-
+import com.google.android.ads.mediationtestsuite.MediationTestSuite;
 
 public class AdManager extends CordovaPlugin {
     public static final String ADMOBADS_LOGTAG = "AdManager";
