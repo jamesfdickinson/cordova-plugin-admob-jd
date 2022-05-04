@@ -54,6 +54,7 @@
 	<platform name="ios">
 		<preference name="APP_ID_IOS" default="ca-app-pub-xxx~yyy" />
 		<preference name="USAGE" default="This identifier will be used to deliver personalized ads to you." />
+		<preference name="GOOGLE_MOBILE_ADS_SDK_VERSION_IOS" default="~> 9.4.0" />
 
 		<config-file target="*-Info.plist" parent="GADApplicationIdentifier">
 			<string>$APP_ID_IOS</string>
@@ -77,7 +78,7 @@
 				<source url="https://cdn.cocoapods.org/"/>
 			</config>
 			<pods>
-				<pod name="Google-Mobile-Ads-SDK" spec="~> 9.3.0" />
+				<pod name="Google-Mobile-Ads-SDK" spec="$GOOGLE_MOBILE_ADS_SDK_VERSION_IOS" />
 			</pods>
 		</podspec>
 
