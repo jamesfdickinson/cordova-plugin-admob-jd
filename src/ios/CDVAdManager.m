@@ -3,7 +3,7 @@
 #import <CommonCrypto/CommonDigest.h>
 #import "CDVAdManager.h"
 #import "MainViewController.h"
-@import GoogleMobileAdsMediationTestSuite;
+//@import GoogleMobileAdsMediationTestSuite;
 @interface CDVAdManager()
 
 
@@ -96,18 +96,18 @@
 }
 
 
--(void)showMediationTestSuite:(CDVInvokedUrlCommand *)command {
-    NSString *callbackId = command.callbackId;
-    
-    [self.commandDelegate runInBackground:^{
-        CDVPluginResult *pluginResult;
-       [GoogleMobileAdsMediationTestSuite presentOnViewController:self.viewController delegate:nil];
-
-
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
-    }];
-}
+//-(void)showMediationTestSuite:(CDVInvokedUrlCommand *)command {
+//   NSString *callbackId = command.callbackId;
+//    
+//    [self.commandDelegate runInBackground:^{
+//        CDVPluginResult *pluginResult;
+//       [GoogleMobileAdsMediationTestSuite presentOnViewController:self.viewController delegate:nil];
+//
+//
+//        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+//        [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+//    }];
+//}
 -(void)showAdInspector:(CDVInvokedUrlCommand *)command {
     NSString *callbackId = command.callbackId;
     
