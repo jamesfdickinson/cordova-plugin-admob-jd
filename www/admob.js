@@ -124,6 +124,9 @@ admob.showAppOpenAd = function (successCallback, failureCallback) {
 admob.showMediationTestSuite = function (successCallback, failureCallback) {
 	cordova.exec(successCallback, failureCallback, 'AdManager', 'showMediationTestSuite', [])
 };
+admob.showAdInspector = function (successCallback, failureCallback) {
+	cordova.exec(successCallback, failureCallback, 'AdManager', 'showAdInspector', [])
+};
 
 
 if (typeof module !== 'undefined') {

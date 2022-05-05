@@ -3,7 +3,7 @@
 #import <CommonCrypto/CommonDigest.h>
 #import "CDVAdManager.h"
 #import "MainViewController.h"
-
+@import GoogleMobileAdsMediationTestSuite;
 @interface CDVAdManager()
 
 
@@ -96,9 +96,39 @@
 }
 
 
--(void)showAppOpenAd:(CDVInvokedUrlCommand *)command {
+-(void)showMediationTestSuite:(CDVInvokedUrlCommand *)command {
     NSString *callbackId = command.callbackId;
     
+    [self.commandDelegate runInBackground:^{
+       
+       [GoogleMobileAdsMediationTestSuite presentOnViewController:self delegate:nil];
+
+
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+    }];
+}
+-(void)showAdInspector:(CDVInvokedUrlCommand *)command {
+    NSString *callbackId = command.callbackId;
+    
+    [self.commandDelegate runInBackground:^{
+       
+        [GADMobileAds.sharedInstance presentAdInspectorFromViewController:viewController
+        completionHandler:^(NSError *error) {
+        // Error will be non-nil if there was an issue and the inspector was not displayed.
+        }];
+
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+    }];
+}
+
+-(void)showAppOpenAd:(CDVInvokedUrlCommand *)command {
+    NSString *callbackId = command.callbackId;
+    if (!@available(iOS 13, *)) {
+        [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Admob does not support iOS 12 and lower. Skipping"] callbackId:callbackId];
+        return;
+    }
     [self.commandDelegate runInBackground:^{
         CDVPluginResult *pluginResult;
         
@@ -118,10 +148,13 @@
 
 - (void)showInterstitialAd:(CDVInvokedUrlCommand *)command {
     NSString *callbackId = command.callbackId;
-    
+    if (!@available(iOS 13, *)) {
+        [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Admob does not support iOS 12 and lower. Skipping"] callbackId:callbackId];
+        return;
+    }
     [self.commandDelegate runInBackground:^{
         CDVPluginResult *pluginResult;
-        
+
         if (!self.interstitialAd) {
             //pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"interstitialAd is null, call requestInterstitialAd first."];
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"interstitialAd is null, called requestInterstitialAd."];
@@ -140,7 +173,10 @@
 
 - (void)showRewardedAd:(CDVInvokedUrlCommand *)command {
     NSString *callbackId = command.callbackId;
-    
+    if (!@available(iOS 13, *)) {
+        [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Admob does not support iOS 12 and lower. Skipping"] callbackId:callbackId];
+        return;
+    }
     [self.commandDelegate runInBackground:^{
         CDVPluginResult *pluginResult;
         

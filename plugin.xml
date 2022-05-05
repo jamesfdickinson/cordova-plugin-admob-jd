@@ -79,6 +79,7 @@
 			</config>
 			<pods>
 				<pod name="Google-Mobile-Ads-SDK" spec="$GOOGLE_MOBILE_ADS_SDK_VERSION_IOS" />
+				<pod name="GoogleMobileAdsMediationTestSuite" />
 			</pods>
 		</podspec>
 
