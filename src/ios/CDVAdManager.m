@@ -100,7 +100,7 @@
     NSString *callbackId = command.callbackId;
     
     [self.commandDelegate runInBackground:^{
-       
+        CDVPluginResult *pluginResult;
        [GoogleMobileAdsMediationTestSuite presentOnViewController:self delegate:nil];
 
 
@@ -112,7 +112,7 @@
     NSString *callbackId = command.callbackId;
     
     [self.commandDelegate runInBackground:^{
-       
+        CDVPluginResult *pluginResult;
         [GADMobileAds.sharedInstance presentAdInspectorFromViewController:viewController
         completionHandler:^(NSError *error) {
         // Error will be non-nil if there was an issue and the inspector was not displayed.
