@@ -101,7 +101,7 @@
     
     [self.commandDelegate runInBackground:^{
         CDVPluginResult *pluginResult;
-       [GoogleMobileAdsMediationTestSuite presentOnViewController:self delegate:nil];
+       [GoogleMobileAdsMediationTestSuite presentOnViewController:self.viewController delegate:nil];
 
 
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
@@ -113,7 +113,7 @@
     
     [self.commandDelegate runInBackground:^{
         CDVPluginResult *pluginResult;
-        [GADMobileAds.sharedInstance presentAdInspectorFromViewController:viewController
+        [GADMobileAds.sharedInstance presentAdInspectorFromViewController:self.viewController
         completionHandler:^(NSError *error) {
         // Error will be non-nil if there was an issue and the inspector was not displayed.
         }];
