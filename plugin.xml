@@ -71,8 +71,22 @@
 
 		If your app does not integrate AppTrackingTransparency, please indicate this information in the Review Notes section for each version of your app in App Store Connect when submitting for review.
 		https://admob-plus.github.io/docs/cordova/faq -->
-		<!-- <framework src="AppTrackingTransparency.framework" weak="true" /> -->
+		<framework src="AppTrackingTransparency.framework" weak="true" />
+		
+        <config-file target="*-Info.plist" parent="GADDelayAppMeasurementInit">
+            <true/>
+        </config-file>
 
+        <config-file target="*-Info.plist" parent="NSAppTransportSecurity">
+            <dict>
+                <key>NSAllowsArbitraryLoads</key>
+                <true/>
+                <key>NSAllowsArbitraryLoadsForMedia</key>
+                <true/>
+                <key>NSAllowsArbitraryLoadsInWebContent</key>
+                <true/>
+            </dict>
+        </config-file>
 		<podspec>
 			<config>
 				<source url="https://cdn.cocoapods.org/"/>
@@ -84,9 +98,9 @@
 		</podspec>
 
 
-		<!-- <config-file target="*-Info.plist" parent="NSUserTrackingUsageDescription">
+		<config-file target="*-Info.plist" parent="NSUserTrackingUsageDescription">
             <string>$USAGE</string>
-        </config-file> -->
+        </config-file>
 		<!-- SKAdNetworkItems -->
 		<!-- Todo: Update list on each release from https://developers.google.com/admob/ios/ios14?hl=en-US -->
 		<config-file target="*-Info.plist" parent="SKAdNetworkItems">
